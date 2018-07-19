@@ -1,32 +1,30 @@
 import React, { Component, Fragment } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import { bindActionCreators }         from 'redux'
+import { connect }                    from 'react-redux'
 
-import * as todoActions from '../../actions/todos'
+import * as TodoListActions from '../../actions/todo'
 
 class TodoList extends Component {
-
-	constructor(props){
-		super(props)
-		console.log(props)
-	}
-
 	state = {
 		newTodoText : ''
 	}
-
 	addNewTodo = () => {
-		this.props.addTodo(this.state.newTodoText)
-		this.setState({ newTodoText : ''})
-		console.log(this.props)
+		if(this.state.newTodoText === '')
+			alert('Digite algo para inserir.')
+		else{
+			this.props.addTodo(this.state.newTodoText)
+			this.setState({ newTodoText: '' })
+		}
 	}
-
+	removeTodo = (id) =>{
+		this.props.removeTodo(id)
+	}
 	render() {
 		return (
 			<Fragment>
 				<ul>
 					{ this.props.todos.map(todo => (
-						<li key={todo.id}>{todo.text}</li>
+						<li key={todo.id}>{todo.text} - <button onClick={(e) => this.removeTodo(todo.id)}>Remover</button></li>
 					))}
 				</ul>
 				<input
@@ -42,6 +40,6 @@ const mapStateToProps = state => ({
 	todos: state.todos
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators(todoActions, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators(TodoListActions, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList)

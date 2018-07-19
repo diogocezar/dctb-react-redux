@@ -1,9 +1,9 @@
 export default function todos(state = [], action){
-	console.log(state)
-	switch(action){
+	switch(action.type){
 		case 'ADD_TODO':
-			return [1,2,3]
-			//return [ ...state, { id: Math.random(), text: action.text}]
+			return [ ...state, { id: Math.random(), text: action.text}]
+		case 'REMOVE_TODO':
+			return state.filter(item => item.id !== action.id);
 		default:
 			return state
 	}
